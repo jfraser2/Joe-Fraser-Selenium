@@ -1,0 +1,189 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.fraser.joe.poc.microservices.springboot</groupId>
+  <artifactId>SpringBootSeleniumAssessment</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+ 	<properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    	<java.version>1.8</java.version>
+	</properties>
+	
+ 	<parent>
+    	<groupId>org.springframework.boot</groupId>
+    	<artifactId>spring-boot-starter-parent</artifactId>
+    	<version>2.1.18.RELEASE</version>
+    	<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+
+ 	<dependencies>
+
+<!-- Starter Web is used for developing Spring Boot Web Applications or RESTful Services. --> 	  
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+<!-- aides the developer. Whenever files change in the classpath, applications using spring-boot-devtools will cause the application to restart.  -->
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-devtools</artifactId>
+    		<scope>runtime</scope>
+		</dependency>
+
+<!-- add several production grade services to your application with little effort on your part. --> 
+ 	  
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+<!-- Starter Test provides unit testing and integration test capablities with Spring Test, Mockito and JUnit. --> 	  
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+    		<artifactId>spring-boot-starter-test</artifactId>
+    		<scope>test</scope>
+		</dependency>
+    <!-- test dependencies-->
+    	<dependency>
+      		<groupId>org.junit.jupiter</groupId>
+      		<artifactId>junit-jupiter-engine</artifactId>
+      		<version>5.6.2</version>
+      		<scope>test</scope>
+    	</dependency>
+		
+		
+<!-- json to java conversion -->
+		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+    		<artifactId>jackson-databind</artifactId>
+    	</dependency>
+    	
+<!-- For handling Request Validation Errors -->		
+		<dependency>
+		   <groupId>com.fasterxml.jackson.datatype</groupId>
+		   <artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		
+<!-- Api Documentation(Swagger Testing) -->	
+		<dependency>
+			<groupId>io.springfox</groupId>
+      		<artifactId>springfox-swagger2</artifactId>
+      		<version>2.9.2</version>
+    	</dependency>
+    
+    	<dependency>
+    		<groupId>io.springfox</groupId>
+    		<artifactId>springfox-swagger-ui</artifactId>
+    		<version>2.9.2</version>
+		</dependency>
+		
+<!-- Begin Database Dependencies -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		    <exclusions>
+		        <exclusion>
+		            <groupId>com.zaxxer</groupId>
+		            <artifactId>HikariCP</artifactId>
+		        </exclusion>
+		    </exclusions>
+		</dependency>
+  		
+		<dependency>
+    		<groupId>org.hibernate.javax.persistence</groupId>
+    		<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>    		
+ 		</dependency>
+		
+		<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-core</artifactId>
+    		<version>5.2.17.Final</version>
+ 		</dependency>		
+<!-- Tomcat Connection Pool -->
+		<dependency>
+		    <groupId>org.apache.tomcat</groupId>
+		    <artifactId>tomcat-jdbc</artifactId>
+		    <version>9.0.10</version>
+		</dependency>
+		<dependency>
+    		<groupId>org.apache.tomcat</groupId>
+    		<artifactId>tomcat-juli</artifactId>
+    		<version>9.0.37</version>
+		</dependency>
+				
+<!-- H2 in memory database -->
+				
+		<dependency>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+    		<scope>runtime</scope>
+		</dependency>
+		
+    	
+<!-- Needed for the Docker Plugin -->
+<!-- https://mvnrepository.com/artifact/com.spotify/docker-maven-plugin (plexus) -->
+<!-- Don't think this will work on windows -->
+		<dependency>
+    		<groupId>com.spotify</groupId>
+    		<artifactId>dockerfile-maven-plugin</artifactId>
+    		<version>1.4.10</version>
+		</dependency>
+		
+		
+	</dependencies>
+	
+<!-- make the jar in eclipse 	right click Project, Run As: Maven Build -->
+<!-- goal needs to be set as clean package -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			
+<!-- goal needs to be set as docker:build -->
+<!-- output directory is: ${project.build.directory}/docker -->	
+<!-- Don't think this will work on windows -->
+			<plugin>
+  				<groupId>com.spotify</groupId>
+  				<artifactId>dockerfile-maven-plugin</artifactId>
+  				<version>1.4.10</version>
+  				<executions>
+    				<execution>
+      					<id>default</id>
+     					<phase>deploy</phase>
+          				<goals>
+        					<goal>build</goal>
+      					</goals>
+    				</execution>
+  				</executions>
+  				<configuration>
+					<contextDirectory>docker</contextDirectory>
+					<dockerfile>docker/Dockerfile</dockerfile>
+<!--  docker.containers/group-name/image-name -->					  				
+    				<repository>docker.containers/starterProjects/SeleniumAssessmentDockerImage</repository>
+    				<tag>${project.version}</tag>
+    				<buildArgs>
+      					<JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+    				</buildArgs>
+  				</configuration>
+			</plugin>	
+    			
+		</plugins>
+		
+	</build>
+		
+	<profiles>
+  		<profile>
+    		<id>dev</id>
+    		<activation>
+      			<activeByDefault>true</activeByDefault>
+    		</activation>
+		</profile>
+	</profiles>	
+		
+  
+</project>

@@ -20,7 +20,6 @@ public class PocAppMain    // Proof of Concept App Main
 {
 	public static void main(String[] args)
 	{
-//		System.setProperty("server.servlet.context-path", "/rest/api");	
 		// default Application context-path is: "/"
 		// should be in file application.properties in src/main/resources
 //		System.setProperty(ConfigServerReader.APP_NAME_PROPERTY, "RegistrationMicroService");

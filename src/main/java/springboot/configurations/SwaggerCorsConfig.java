@@ -75,9 +75,12 @@ public class SwaggerCorsConfig
     	
     	// Mapping for H2 Console
         registry.addMapping("/h2-console/**")
-            .allowedOrigins("*")
+        	.allowedOrigins("http://localhost:8080")
+//            .allowedOrigins("*")
             .allowedHeaders("Access-Control-Allow-Origin", "Origin", "Access-Control-Allow-Headers", "Accept", "Content-Type", "Vary")
-            .allowedMethods("GET", "POST");
+        	.allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
+         	.exposedHeaders("Content-Type", "Content-Range", "Access-Control-Allow-Origin")   // headers for the response does not support wildcards
+        	.allowCredentials(false);  
         
         // Add more mappings...
     }

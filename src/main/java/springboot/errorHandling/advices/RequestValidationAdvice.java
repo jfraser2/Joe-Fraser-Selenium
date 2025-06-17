@@ -52,7 +52,7 @@ public class RequestValidationAdvice
 		String json = convertApiErrorToJson(apiError);
 		apiError = null;
 		
-	    return buildResponseEntity(json, HttpStatus.OK);
+	    return buildResponseEntity(json, HttpStatus.OK, request);
 	}
 
 	//other exception handlers or handler overrides below
@@ -70,12 +70,12 @@ public class RequestValidationAdvice
 		String json = convertApiErrorToJson(apiError);
 		apiError = null;
         
-        return buildResponseEntity(json, HttpStatus.OK);
+        return buildResponseEntity(json, HttpStatus.OK, request);
     }
 	
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgumentException(
-    		IllegalArgumentException ex)
+    		IllegalArgumentException ex, WebRequest request)
     {
 		ApiError apiError = new ApiError();
 		apiError.setStatus(HttpStatus.BAD_REQUEST);
@@ -85,12 +85,12 @@ public class RequestValidationAdvice
 		String json = convertApiErrorToJson(apiError);
 		apiError = null;
         
-        return buildResponseEntity(json, HttpStatus.OK);
+        return buildResponseEntity(json, HttpStatus.OK, request);
     }
     
     @ExceptionHandler(RequestValidationException.class)
     public ResponseEntity<Object> handleRequestValidationException(
-    	RequestValidationException ex)
+    	RequestValidationException ex, WebRequest request)
     {
 		ApiError apiError = new ApiError();
 		apiError.setStatus(HttpStatus.BAD_REQUEST);
@@ -102,13 +102,13 @@ public class RequestValidationAdvice
 		String json = convertApiErrorToJson(apiError);
 		apiError = null;
         
-        return buildResponseEntity(json, HttpStatus.OK);
+        return buildResponseEntity(json, HttpStatus.OK, request);
     }
 	 
-	private ResponseEntity<Object> buildResponseEntity(String json, HttpStatus aStatus)
+	private ResponseEntity<Object> buildResponseEntity(String json, HttpStatus aStatus, WebRequest request)
 	{
 		// support CORS
-		HttpHeaders aResponseHeader = createResponseHeader();
+		HttpHeaders aResponseHeader = createResponseHeader(request);
 		
 		return new ResponseEntity<>(json, aResponseHeader, aStatus);
 	}
@@ -130,11 +130,11 @@ public class RequestValidationAdvice
 		return json;
 	}
 	
-	private HttpHeaders createResponseHeader()
+	private HttpHeaders createResponseHeader(WebRequest request)
 	{
 		// support CORS
 		HttpHeaders aResponseHeader = new HttpHeaders();
-//		aResponseHeader.add("Access-Control-Allow-Origin", request.getHeader("Access-Control-Allow-Origin"));
+		aResponseHeader.add("Access-Control-Allow-Origin", request.getHeader("Origin"));
 //		aResponseHeader.add("Access-Control-Allow-Origin", "*");
 		aResponseHeader.add("Content-Type", "application/json");
 		

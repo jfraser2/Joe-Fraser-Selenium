@@ -1,11 +1,9 @@
 package springboot.controllers.rest;
 
-import java.lang.reflect.Method;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,8 +23,6 @@ import springboot.autowire.helpers.StringBuilderContainer;
 import springboot.autowire.helpers.ValidationErrorContainer;
 import springboot.dto.request.Encoding;
 import springboot.dto.request.Decoding;
-import springboot.dto.response.EncodingOperation;
-import springboot.dto.response.DecodingOperation;
 import springboot.dto.validation.exceptions.RequestValidationException;
 import springboot.entities.UrlShortNameEntity;
 import springboot.errorHandling.helpers.ApiValidationError;
@@ -100,7 +96,7 @@ public class EncodeDecodeController
 		savedEntity = null;
 		
 		// support CORS
-		HttpHeaders aResponseHeader = createResponseHeader();
+		HttpHeaders aResponseHeader = createResponseHeader(request);
 		concurrentRequestLimit.decrement();
 		
 		return new ResponseEntity<>(jsonString, aResponseHeader, HttpStatus.OK);
@@ -140,7 +136,7 @@ public class EncodeDecodeController
 		record = null;
 		
 		// support CORS
-		HttpHeaders aResponseHeader = createResponseHeader();
+		HttpHeaders aResponseHeader = createResponseHeader(request);
 		concurrentRequestLimit.decrement();
 		
 		return new ResponseEntity<>(jsonString, aResponseHeader, HttpStatus.OK);

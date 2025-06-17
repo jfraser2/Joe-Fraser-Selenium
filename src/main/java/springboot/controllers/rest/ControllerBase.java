@@ -2,6 +2,8 @@ package springboot.controllers.rest;
 
 import java.lang.reflect.Method;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.http.HttpHeaders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -74,11 +76,11 @@ public abstract class ControllerBase
 		
 	}
 	
-	protected HttpHeaders createResponseHeader()
+	protected HttpHeaders createResponseHeader(HttpServletRequest request)
 	{
 		// support CORS
 		HttpHeaders aResponseHeader = new HttpHeaders();
-//		aResponseHeader.add("Access-Control-Allow-Origin", request.getHeader("Access-Control-Allow-Origin"));
+		aResponseHeader.add("Access-Control-Allow-Origin", request.getHeader("Origin"));
 //		aResponseHeader.add("Access-Control-Allow-Origin", "*");
 		aResponseHeader.add("Content-Type", "application/json");
 		

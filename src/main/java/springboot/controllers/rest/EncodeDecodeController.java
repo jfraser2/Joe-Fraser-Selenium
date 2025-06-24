@@ -27,7 +27,7 @@ import springboot.dto.validation.exceptions.RequestValidationException;
 import springboot.entities.UrlShortNameEntity;
 import springboot.errorHandling.helpers.ApiValidationError;
 import springboot.services.interfaces.EncodeDecode;
-import springboot.services.interfaces.RequestValidation;
+import springboot.services.validation.request.RequestValidationService;
 
 @RestController
 @RequestMapping(path="/rest/api")
@@ -42,12 +42,6 @@ public class EncodeDecodeController
 	private EncodeDecode encodeDecodeService;
 	
 	@Autowired
-	private RequestValidation<Encoding> encodingValidation;
-	
-	@Autowired
-	private RequestValidation<Decoding> decodingValidation;
-	
-	@Autowired
 	@Qualifier("requestValidationErrorsContainer")
 	private ValidationErrorContainer requestValidationErrorsContainer;
 	
@@ -60,7 +54,8 @@ public class EncodeDecodeController
 			consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public ResponseEntity<Object> encode(@RequestBody Encoding data, HttpServletRequest request)
+	public ResponseEntity<Object> encode(@RequestBody Encoding data,
+		HttpServletRequest request, @Autowired RequestValidationService<Encoding> encodingValidation)
 		throws RequestValidationException, IllegalArgumentException, AccessDeniedException
 	{
 		
@@ -106,7 +101,8 @@ public class EncodeDecodeController
 			path = "/v1/decode",
 			produces = MediaType.APPLICATION_JSON_VALUE
 	)
-	public ResponseEntity<Object> decode(@RequestParam(required = true) String shortenedUrl, HttpServletRequest request)
+	public ResponseEntity<Object> decode(@RequestParam(required = true) String shortenedUrl,
+		HttpServletRequest request, @Autowired RequestValidationService<Decoding> decodingValidation)
 		throws RequestValidationException, IllegalArgumentException, AccessDeniedException
 	{
 		if (concurrentRequestLimit.atLimit()) {

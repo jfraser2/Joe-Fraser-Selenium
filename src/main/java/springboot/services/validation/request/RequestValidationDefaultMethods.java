@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import springboot.services.validation.request.interfaces.functional.ValidateRequestLogic;
 
 @Service
-@Scope("prototype")
+@Scope("prototype") // LifeCycle Ends at Instantiation because of prototype
 public class RequestValidationDefaultMethods<RequestType>
 {
 	private final ValidateRequestLogic<RequestType> defaultValidateRequest = (aRequest, aListContainer) ->

@@ -1,6 +1,7 @@
 package springboot.services.validation.request;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Service;
 
 import springboot.autowire.helpers.ValidationErrorContainer;
@@ -9,7 +10,7 @@ import springboot.services.validation.request.interfaces.functional.ValidateRequ
 
 // uses java generics
 @Service
-@Scope("prototype") // LifeCycle Ends at Instantiation because of prototype
+@Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS) // LifeCycle Ends at Instantiation because of prototype
 public class RequestValidationService<RequestType>
 	implements RequestValidation<RequestType>
 {

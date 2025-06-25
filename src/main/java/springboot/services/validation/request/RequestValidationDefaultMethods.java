@@ -8,13 +8,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
-
 import springboot.services.validation.request.interfaces.functional.ValidateRequestLogic;
 
-@Service
-@Scope("prototype") // LifeCycle Ends at Instantiation because of prototype
 public class RequestValidationDefaultMethods<RequestType>
 {
 	private final ValidateRequestLogic<RequestType> defaultValidateRequest = (aRequest, aListContainer) ->
@@ -47,7 +42,7 @@ public class RequestValidationDefaultMethods<RequestType>
 		return;
 	};
 	
-	RequestValidationDefaultMethods()
+	public RequestValidationDefaultMethods()
 	{
 		
 	}

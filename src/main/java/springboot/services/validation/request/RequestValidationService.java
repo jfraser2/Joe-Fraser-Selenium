@@ -15,7 +15,7 @@ public class RequestValidationService<RequestType>
 	implements RequestValidation<RequestType>
 {
 	
-	private RequestValidationDefaultMethods<RequestType> requestValidationDefaultMethods;
+	private final RequestValidationDefaultMethods<RequestType> requestValidationDefaultMethods;
 	
 	public RequestValidationService()
 	{

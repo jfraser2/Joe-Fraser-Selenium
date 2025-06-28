@@ -32,8 +32,10 @@ http://localhost:8080/v2/api-docs
 #Docker Information
 I put the files docker-compose.yml and Dockerfile into the project<br/>
 It is now working, and tested<br/>
-"docker compose up" in the windows project folder<br/>
-you cannot use the command until DockerDesktop is running
+Enter "docker compose up" in the windows project folder<br/>
+The "docker compose up" only compiles and deploys code. No worries about multiple runs.<br/>
+The files now perform a compile inside Docker with Java version 1.8<br/>
+you cannot use the command until DockerDesktop is running<br/>
 
 #H2 Console 
 fav Browser url, I use google chrome<br/>

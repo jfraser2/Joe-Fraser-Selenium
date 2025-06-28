@@ -12,14 +12,13 @@ import springboot.services.validation.request.interfaces.functional.ValidateRequ
 @Service
 @Scope(value = "prototype", proxyMode = ScopedProxyMode.TARGET_CLASS) // LifeCycle Ends at Instantiation because of prototype
 public class RequestValidationService<RequestType>
+	extends RequestValidationDefaultMethods<RequestType>
 	implements RequestValidation<RequestType>
 {
 	
-	private final RequestValidationDefaultMethods<RequestType> requestValidationDefaultMethods;
 	
 	public RequestValidationService()
 	{
-		this.requestValidationDefaultMethods = new RequestValidationDefaultMethods<RequestType>();
 	}
 	
 	public void validateRequest(RequestType aRequest, ValidationErrorContainer aListContainer, ValidateRequestLogic<RequestType> overRide)
@@ -31,7 +30,7 @@ public class RequestValidationService<RequestType>
 		}
 		else
 		{
-			methodToExecute = this.requestValidationDefaultMethods.getDefaultValidateRequest();
+			methodToExecute = getDefaultValidateRequest();
 		}
 		
 		methodToExecute.validateRequest(aRequest, aListContainer);
